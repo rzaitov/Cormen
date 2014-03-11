@@ -44,6 +44,11 @@
     <Compile Include="AlgorithmExtensions.cs" />
     <Compile Include="GraphColors.cs" />
     <Compile Include="IAlgorithm.cs" />
+    <Compile Include="DepthFirstSearch\RecursiveDepthFirstSearchAlgorithm.cs" />
+    <Compile Include="DepthFirstSearch\NonRecursiveDepthFirstSearchAlgorithm.cs" />
+    <Compile Include="DepthFirstSearch\IDepthFirstSearchAlgorithm.cs" />
+    <Compile Include="EventHelpers.cs" />
+    <Compile Include="DiscoveryFinishTime.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
