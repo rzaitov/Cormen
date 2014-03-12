@@ -35,6 +35,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DepthFirstSearch\Test_RecursiveDepthFirstSearchAlgorithm.cs" />
+    <Compile Include="DepthFirstSearch\Test_NonRecursiveDepthFirstSearchAlgorithm.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
