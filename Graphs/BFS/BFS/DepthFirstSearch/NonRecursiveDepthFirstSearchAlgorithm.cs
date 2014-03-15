@@ -1,24 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace Graphs
 {
 	public class NonRecursiveDepthFirstSearchAlgorithm<TVertex> : IDepthFirstSearchAlgorithm<TVertex>
 	{
+		public event Action CompleteEvent;
+
 		public event Action<TVertex> VertexDiscover;
 		public event Action<TVertex> VertexFinish;
+		public event Action<Edge<TVertex>> ExploreEdge;
 
 		private readonly DirectedGraph<TVertex> _graph;
 		private readonly Dictionary<TVertex, GraphColors> _colors;
+
+		private readonly ReadOnlyDictionary<TVertex, GraphColors> _readOnlyColors;
+		public ReadOnlyDictionary<TVertex, GraphColors> Colors
+		{
+			get { return _readOnlyColors; }
+		}
+
+		public AlgorithmState State { get; private set; }
 
 		public NonRecursiveDepthFirstSearchAlgorithm(DirectedGraph<TVertex> graph)
 		{
 			_graph = graph;
 			_colors = new Dictionary<TVertex, GraphColors>(_graph.Count);
+			_readOnlyColors = new ReadOnlyDictionary<TVertex, GraphColors>(_colors);
 		}
 
 		public void Run()
 		{
+			State = AlgorithmState.Runing;
+
 			foreach(TVertex w in _graph.Keys)
 				_colors[w] = GraphColors.White;
 
@@ -47,9 +62,17 @@ namespace Graphs
 						_colors[sf.Vertex] = GraphColors.Gray;
 						EventHelpers.SafeInvoke(VertexDiscover, sf.Vertex);
 
+						if(State != AlgorithmState.Runing)
+							return;
+
 						continue_label:
 						while(sf.AdjVertexEnumerator.MoveNext())
 						{
+							EventHelpers.SafeInvoke(ExploreEdge, new Edge<TVertex>(sf.Vertex, sf.AdjVertexEnumerator.Current));
+
+							if(State != AlgorithmState.Runing)
+								return;
+
 							if(_colors[sf.AdjVertexEnumerator.Current] != GraphColors.White)
 								continue;
 
@@ -69,9 +92,18 @@ namespace Graphs
 
 						_colors[sf.Vertex] = GraphColors.Black;
 						EventHelpers.SafeInvoke(VertexFinish, sf.Vertex);
+
+						if(State != AlgorithmState.Runing)
+							return;
 					}
 				}
+
+				if(State != AlgorithmState.Runing)
+					return;
 			}
+
+			State = AlgorithmState.Completed;
+			EventHelpers.SafeInvoke(CompleteEvent);
 		}
 
 		private StackFrame<TVertex> CreateNewFrameFor(TVertex vertex)
@@ -84,6 +116,11 @@ namespace Graphs
 			};
 
 			return frame;
+		}
+
+		public void Terminate()
+		{
+			State = AlgorithmState.Terminated;
 		}
 	}
 

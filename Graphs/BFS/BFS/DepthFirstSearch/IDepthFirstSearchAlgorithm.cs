@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.ObjectModel;
+using System.Collections.Generic;
+
 
 namespace Graphs
 {
@@ -6,6 +9,10 @@ namespace Graphs
 	{
 		event Action<TVertex> VertexDiscover;
 		event Action<TVertex> VertexFinish;
+
+		event Action<Edge<TVertex>> ExploreEdge;
+
+		ReadOnlyDictionary<TVertex, GraphColors> Colors { get; }
 	}
 }
 

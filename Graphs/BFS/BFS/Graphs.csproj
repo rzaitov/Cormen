@@ -9,6 +9,7 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>Graphs</RootNamespace>
     <AssemblyName>BFS</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -43,15 +44,19 @@
     <Compile Include="DirectedGraph.cs" />
     <Compile Include="AlgorithmExtensions.cs" />
     <Compile Include="GraphColors.cs" />
-    <Compile Include="IAlgorithm.cs" />
     <Compile Include="DepthFirstSearch\RecursiveDepthFirstSearchAlgorithm.cs" />
     <Compile Include="DepthFirstSearch\NonRecursiveDepthFirstSearchAlgorithm.cs" />
     <Compile Include="DepthFirstSearch\IDepthFirstSearchAlgorithm.cs" />
     <Compile Include="EventHelpers.cs" />
     <Compile Include="DiscoveryFinishTime.cs" />
+    <Compile Include="AcyclicityCheckerAlgorithm.cs" />
+    <Compile Include="Edge.cs" />
+    <Compile Include="Algorithm\IAlgorithm.cs" />
+    <Compile Include="Algorithm\AlgorithmState.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Folder Include="DepthFirstSearch\" />
+    <Folder Include="Algorithm\" />
   </ItemGroup>
 </Project>
