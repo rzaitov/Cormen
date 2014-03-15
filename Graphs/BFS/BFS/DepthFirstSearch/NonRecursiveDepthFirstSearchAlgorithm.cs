@@ -13,6 +13,7 @@ namespace Graphs
 		public event Action<Edge<TVertex>> ExploreEdge;
 
 		private readonly DirectedGraph<TVertex> _graph;
+		private readonly IEnumerable<TVertex> _vertexes;
 		private readonly Dictionary<TVertex, GraphColors> _colors;
 
 		private readonly ReadOnlyDictionary<TVertex, GraphColors> _readOnlyColors;
@@ -24,22 +25,31 @@ namespace Graphs
 		public AlgorithmState State { get; private set; }
 
 		public NonRecursiveDepthFirstSearchAlgorithm(DirectedGraph<TVertex> graph)
+			: this(graph, graph.Keys)
+		{
+		}
+
+		public NonRecursiveDepthFirstSearchAlgorithm(DirectedGraph<TVertex> graph, IEnumerable<TVertex> vertexes)
 		{
 			_graph = graph;
+			_vertexes = vertexes;
+
 			_colors = new Dictionary<TVertex, GraphColors>(_graph.Count);
 			_readOnlyColors = new ReadOnlyDictionary<TVertex, GraphColors>(_colors);
+
+			State = AlgorithmState.Initialized;
 		}
 
 		public void Run()
 		{
 			State = AlgorithmState.Runing;
 
-			foreach(TVertex w in _graph.Keys)
+			foreach(TVertex w in _vertexes)
 				_colors[w] = GraphColors.White;
 
 			Stack<StackFrame<TVertex>> stack = new Stack<StackFrame<TVertex>>();
 
-			foreach(var vertex in _graph.Keys)
+			foreach(var vertex in _vertexes)
 			{
 				if(_colors[vertex] == GraphColors.White)
 				{

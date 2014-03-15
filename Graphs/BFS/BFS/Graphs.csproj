@@ -40,7 +40,6 @@
     <Compile Include="BfsIterator.cs" />
     <Compile Include="LinkedListHelper.cs" />
     <Compile Include="Dfs.cs" />
-    <Compile Include="SCC.cs" />
     <Compile Include="DirectedGraph.cs" />
     <Compile Include="AlgorithmExtensions.cs" />
     <Compile Include="GraphColors.cs" />
@@ -53,6 +52,7 @@
     <Compile Include="Edge.cs" />
     <Compile Include="Algorithm\IAlgorithm.cs" />
     <Compile Include="Algorithm\AlgorithmState.cs" />
+    <Compile Include="StronglyConenctedComponentsAlgorithm.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

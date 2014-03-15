@@ -13,6 +13,8 @@ namespace Graphs
 		public event Action<Edge<TVertex>> ExploreEdge;
 
 		private readonly DirectedGraph<TVertex> _graph;
+		private readonly IEnumerable<TVertex> _vertexes;
+
 		private readonly Dictionary<TVertex, GraphColors> _colors;
 
 		private readonly ReadOnlyDictionary<TVertex, GraphColors> _readOnlyColors;
@@ -24,8 +26,15 @@ namespace Graphs
 		public AlgorithmState State { get; private set; }
 
 		public RecursiveDepthFirstSearchAlgorithm(DirectedGraph<TVertex> graph)
+			: this(graph, graph.Keys)
+		{
+		}
+
+		public RecursiveDepthFirstSearchAlgorithm(DirectedGraph<TVertex> graph, IEnumerable<TVertex> vertexes)
 		{
 			_graph = graph;
+			_vertexes = vertexes;
+
 			_colors = new Dictionary<TVertex, GraphColors>(_graph.Count);
 			_readOnlyColors = new ReadOnlyDictionary<TVertex, GraphColors>(_colors);
 
@@ -36,11 +45,11 @@ namespace Graphs
 		{
 			State = AlgorithmState.Runing;
 
-			foreach(TVertex w in _graph.Keys)
+			foreach(TVertex w in _vertexes)
 				_colors[w] = GraphColors.White;
 
-			foreach(var w in _graph.Keys)
-				if(_colors[w] == GraphColors.White)
+			foreach(var w in _vertexes)
+ 				if(_colors[w] == GraphColors.White)
 				{
 					Visit(w);
 
@@ -69,7 +78,7 @@ namespace Graphs
 					Visit(w);
 			}
 
-			_colors[vertex] = GraphColors.Gray;
+			_colors[vertex] = GraphColors.Black;
 			EventHelpers.SafeInvoke(VertexFinish, vertex);
 		}
 
